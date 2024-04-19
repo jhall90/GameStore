@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "dotnet",
+			"task": "watch GameStore.Frontend",
+			"file": "D:\\projects\\GameStore\\GameStore.Frontend\\GameStore.Frontend.csproj",
+			"problemMatcher": [],
+			"label": "dotnet: watch GameStore.Frontend",
+			"group": "build"
+		},
+		{
+			"type": "dotnet",
+			"task": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+			"label": "dotnet: build"
+		}
+	]
+}

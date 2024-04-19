@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "C#: GameStore.Frontend [https]",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\GameStore.Frontend\\GameStore.Frontend.csproj",
+            "launchConfigurationId": "TargetFramework=;https"
+        }
+    ]
+}
