@@ -11,7 +11,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @onclick="@Confirm">Delete Game</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @onclick="@ConfirmAsync">Delete Game</button>
         </div>
         </div>
     </div>
@@ -34,9 +34,9 @@
         return $"deleteModal-{game.Id}";
     }
 
-    private void Confirm()
+    private async Task ConfirmAsync()
     {
-        GamesClient.DeleteGame(Game!.Id);
+        await GamesClient.DeleteGameAsync(Game!.Id);
         NavigationManager.Refresh(); // since this is nested in the home component refreshing will just refresh the component without the deleted game
     }
 }

@@ -6,8 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents(); // enables Razor interactive server side rendering
-builder.Services.AddSingleton<GamesClient>();
-builder.Services.AddSingleton<GenresClient>();
+
+var gameStoreApiUrl = builder.Configuration["GameStoreApiUrl"] ??
+    throw new Exception("GameStoreApiUrl is not set.  Look at cloning the GameStoreApi in the Github and updating this program's appsettings.json.  Since this is local and not anything secret where users secrets needs to be used.");
+
+builder.Services.AddHttpClient<GamesClient>(client => client.BaseAddress = new Uri(gameStoreApiUrl));
+builder.Services.AddHttpClient<GenresClient>(client => client.BaseAddress = new Uri(gameStoreApiUrl));
+
+// used before building out the GameStoreApi portion
+// builder.Services.AddSingleton<GamesClient>();
+// builder.Services.AddSingleton<GenresClient>();
 
 var app = builder.Build();
 

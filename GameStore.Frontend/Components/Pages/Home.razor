@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject GamesClient GamesClient
+@attribute [StreamRendering]
 
 <PageTitle>Game Catalog</PageTitle>
 
@@ -9,7 +10,10 @@
 
 @if (games is null)
 {
-    <p><em>Loading...</em></p>
+    <div class="text-center m-4 display-1">
+        <em>Loading...</em>
+    </div>
+    
 } 
 else 
 {    
@@ -52,9 +56,9 @@ else
 
     private GameSummary[]? games;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        games = GamesClient.GetGames();
+        games = await GamesClient.GetGamesAsync();
     }
 
     private static string GameUrl(int id) => $"/editgame/{id}";

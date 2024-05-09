@@ -20,7 +20,17 @@ else
 {
     <div class="row">
         <div class="col-md-6 offset-3">
-            <EditForm Model="@game" FormName="editGame" OnValidSubmit="HandleSubmit">
+            <EditForm 
+                Model="@game" 
+                FormName="editGame" 
+                OnValidSubmit="HandleSubmitAsync"
+                Enhance
+                @* Enhance will allow the form to behave like a single page app, only the changes will be re-rendered. *@
+                @* Use for static forms *@
+                @* When you do a post Razor enhance will change it to a fetch call *@
+                @* This is only needed when not using the @rendermode InteractiveServer at the top of the page *@
+                @* Having both will not hurt the app *@
+                >
                 @* 
                     <DataAnnotationsValidator /> is used in conjunction with OnValidSubmit to allow client side validation in the modal 
                     <ValidationSummary /> will list all validation errors which can be useful if we had way more inputs to check ex:50 inputs
@@ -77,7 +87,7 @@ else
     private Genre[]? genres;
     private string title = string.Empty;
 
-    protected override void OnParametersSet() 
+    protected override async Task OnParametersSetAsync() 
     {
         //This is invocted when the user first arrives and when the user submits the data
             // happens before HandleSubmit() which would destroy the user data if we dont have this check for it
@@ -89,7 +99,7 @@ else
         //Determine if an id is passed in and if we need to get game details or display an empty game to add
         if (Id is not null)
         {
-            game = GamesClient.GetGame(Id.Value);
+            game = await GamesClient.GetGameAsync(Id.Value);
             title = $" Edit - {game.Name}";
         }
         else
@@ -103,23 +113,23 @@ else
         }
     }
 
-    protected override void OnInitialized() 
+    protected override async Task OnInitializedAsync() 
     {
-        genres = GenresClient.GetGenres();
+        genres = await GenresClient.GetGenresAsync();
     }
 
-    private void  HandleSubmit()
+    private async Task HandleSubmitAsync()
     {
         ArgumentNullException.ThrowIfNull(game);
 
         if (Id is null)
         {
-            GamesClient.AddGame(game); 
+            await GamesClient.AddGameAsync(game); 
         }
         else
         {
             game.Id = Id.Value;
-            GamesClient.UpdateGame(game);
+            await GamesClient.UpdateGameAsync(game);
         }
 
         NavigationManager.NavigateTo("/"); 
